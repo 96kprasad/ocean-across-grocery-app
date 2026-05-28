@@ -3,8 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft, SlidersHorizontal, AlertCircle, ShoppingCart } from "lucide-react";
 import { useProductsStore } from "../../store/productsStore";
 import { categories } from "../../data/products";
-import ProductCard from "../../components/product/ProductCard";
-import ProductSkeleton from "../../components/common/ProductSkeleton";
+import ProductGrid from "../../components/common/ProductGrid";
 import CategoryIcon from "../../components/common/CategoryIcon";
 
 export default function CategoryPage() {
@@ -23,6 +22,30 @@ export default function CategoryPage() {
 
   const filtered = products.filter((p) => p.category === selectedCat);
 
+  const content = () => {
+    if (error) {
+      return (
+        <div className="flex flex-col items-center justify-center py-20 text-red-400">
+          <AlertCircle size={48} className="mb-3" />
+          <p className="font-medium">{error}</p>
+          <button onClick={fetchProducts} className="mt-3 text-green-500 underline text-sm">
+            Try again
+          </button>
+        </div>
+      );
+    }
+    if (!isLoading && filtered.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+          <ShoppingCart size={48} className="mb-3" />
+          <p className="text-lg font-medium">No products found</p>
+          <p className="text-sm">Try a different category</p>
+        </div>
+      );
+    }
+    return <ProductGrid products={filtered} isLoading={isLoading} skeletonCount={8} />;
+  };
+
   return (
     <div className="px-4 pt-4 md:px-8">
       {/* Mobile Header */}
@@ -38,7 +61,6 @@ export default function CategoryPage() {
 
       {/* Desktop Layout: Sidebar + Grid */}
       <div className="hidden md:flex gap-8">
-        {/* Sidebar */}
         <aside className="w-56 flex-shrink-0">
           <h2 className="text-lg font-bold text-gray-900 mb-4">Categories</h2>
           <div className="space-y-1">
@@ -56,70 +78,25 @@ export default function CategoryPage() {
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
-                <CategoryIcon name={cat.icon} size={18} className={selectedCat === cat.name ? "text-white" : ""} />
+                <CategoryIcon
+                  name={cat.icon}
+                  size={18}
+                  className={selectedCat === cat.name ? "text-white" : ""}
+                />
                 <span>{cat.name}</span>
               </button>
             ))}
           </div>
         </aside>
 
-        {/* Desktop Products */}
         <div className="flex-1">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">{selectedCat}</h1>
-          {renderProducts(isLoading, error, filtered, fetchProducts)}
+          {content()}
         </div>
       </div>
 
       {/* Mobile Products */}
-      <div className="md:hidden">
-        {renderProducts(isLoading, error, filtered, fetchProducts)}
-      </div>
-    </div>
-  );
-}
-
-function renderProducts(
-  isLoading: boolean,
-  error: string | null,
-  filtered: ReturnType<typeof Array.prototype.filter>,
-  fetchProducts: () => Promise<void>
-) {
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-red-400">
-        <AlertCircle size={48} className="mb-3" />
-        <p className="font-medium">{error}</p>
-        <button
-          onClick={fetchProducts}
-          className="mt-3 text-green-500 underline text-sm"
-        >
-          Try again
-        </button>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {Array(8).fill(0).map((_, i) => <ProductSkeleton key={i} />)}
-      </div>
-    );
-  }
-
-  if (filtered.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-        <ShoppingCart size={48} className="mb-3" />
-        <p className="text-lg font-medium">No products found</p>
-        <p className="text-sm">Try a different category</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-      {filtered.map((p) => <ProductCard key={p.id} product={p} />)}
+      <div className="md:hidden">{content()}</div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, MapPin, ShoppingBasket } from "lucide-react";
+import Dropdown from "../../components/common/input/Dropdown";
 
 const zones = ["Banasree", "Gulshan", "Dhanmondi", "Mirpur", "Uttara"];
 const areas: Record<string, string[]> = {
@@ -15,6 +16,11 @@ export default function LocationPage() {
   const navigate = useNavigate();
   const [zone, setZone] = useState("");
   const [area, setArea] = useState("");
+
+  const zoneOptions = zones.map((z) => ({ label: z, value: z }));
+  const areaOptions = zone
+    ? (areas[zone] ?? []).map((a) => ({ label: a, value: a }))
+    : [];
 
   return (
     <div className="min-h-screen flex">
@@ -51,32 +57,23 @@ export default function LocationPage() {
           </div>
 
           <div className="space-y-4 mb-10">
-            <div>
-              <label className="text-xs text-gray-500 mb-1 block">Your Zone</label>
-              <select
-                value={zone}
-                onChange={(e) => { setZone(e.target.value); setArea(""); }}
-                aria-label="Select zone"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-700 outline-none focus:border-green-500 transition-colors"
-              >
-                <option value="">Select zone</option>
-                {zones.map((z) => <option key={z} value={z}>{z}</option>)}
-              </select>
-            </div>
-
-            <div>
-              <label className="text-xs text-gray-500 mb-1 block">Your Area</label>
-              <select
-                value={area}
-                onChange={(e) => setArea(e.target.value)}
-                disabled={!zone}
-                aria-label="Select area"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-700 outline-none focus:border-green-500 disabled:opacity-50 transition-colors"
-              >
-                <option value="">Types of your area</option>
-                {zone && areas[zone]?.map((a) => <option key={a} value={a}>{a}</option>)}
-              </select>
-            </div>
+            <Dropdown
+              label="Your Zone"
+              options={zoneOptions}
+              value={zone}
+              onChange={(v) => { setZone(v); setArea(""); }}
+              placeholder="Select zone"
+              ariaLabel="Select zone"
+            />
+            <Dropdown
+              label="Your Area"
+              options={areaOptions}
+              value={area}
+              onChange={setArea}
+              placeholder="Types of your area"
+              disabled={!zone}
+              ariaLabel="Select area"
+            />
           </div>
 
           <button

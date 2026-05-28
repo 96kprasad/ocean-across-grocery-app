@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronLeft, Share2, Heart, ChevronDown, ChevronUp, ChevronRight, Star, Minus, Plus } from "lucide-react";
+import { ChevronLeft, Share2, Heart, ChevronDown, ChevronUp, ChevronRight, Star } from "lucide-react";
 import { useProductsStore } from "../../store/productsStore";
 import { useCartStore } from "../../store/cartStore";
 import { useFavoritesStore } from "../../store/favoritesStore";
+import NumberInput from "../../components/common/input/NumberInput";
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -52,32 +53,13 @@ export default function ProductDetailPage() {
             onClick={() => toggleFavorite(product)}
             aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
           >
-            <Heart
-              size={24}
-              className={favorite ? "fill-red-500 text-red-500" : "text-gray-300"}
-            />
+            <Heart size={24} className={favorite ? "fill-red-500 text-red-500" : "text-gray-300"} />
           </button>
         </div>
 
         {/* Qty + Price */}
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setQty((q) => Math.max(1, q - 1))}
-              aria-label="Decrease quantity"
-              className="w-8 h-8 border border-gray-300 rounded-full flex items-center justify-center text-gray-600 hover:border-green-500 transition-colors"
-            >
-              <Minus size={16} />
-            </button>
-            <span className="text-lg font-semibold">{qty}</span>
-            <button
-              onClick={() => setQty((q) => q + 1)}
-              aria-label="Increase quantity"
-              className="w-8 h-8 border border-gray-300 rounded-full flex items-center justify-center text-gray-600 hover:border-green-500 transition-colors"
-            >
-              <Plus size={16} />
-            </button>
-          </div>
+          <NumberInput value={qty} onChange={setQty} min={1} ariaLabel="Product quantity" />
           <span className="text-2xl font-bold text-gray-900">
             ${(product.price * qty).toFixed(2)}
           </span>
@@ -91,7 +73,9 @@ export default function ProductDetailPage() {
             className="flex items-center justify-between w-full"
           >
             <span className="font-semibold text-gray-900">Product Detail</span>
-            {detailOpen ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
+            {detailOpen
+              ? <ChevronUp size={18} className="text-gray-400" />
+              : <ChevronDown size={18} className="text-gray-400" />}
           </button>
           {detailOpen && (
             <p className="text-gray-500 text-sm mt-3 leading-relaxed">{product.description}</p>

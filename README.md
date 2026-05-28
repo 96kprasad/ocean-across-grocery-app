@@ -6,66 +6,69 @@ A fully responsive grocery delivery web application built with React, TypeScript
 
 ## 🚀 Live Demo
 
-> [Deploy link here — Vercel / Netlify]
+> https://ocean-across-grocery-app.vercel.app
 
 ---
 
 ## 📸 Screens
 
-| Auth & Onboarding | Main App | Checkout |
-|---|---|---|
-| Splash Screen | Home | Checkout |
+| Auth & Onboarding    | Main App         | Checkout      |
+| -------------------- | ---------------- | ------------- |
+| Splash Screen        | Home             | Checkout      |
 | Onboarding / Welcome | Category Listing | Order Success |
-| Phone Number Entry | Product Details | Order Failure |
-| OTP Verification | Search | |
-| Location Selection | Filters | |
-| Login | Cart | |
-| Sign Up | Favourites | |
-| | Account | |
+| Phone Number Entry   | Product Details  | Order Failure |
+| OTP Verification     | Search           |               |
+| Location Selection   | Filters          |               |
+| Login                | Cart             |               |
+| Sign Up              | Favourites       |               |
+|                      | Account          |               |
 
 ---
 
 ## 🛠 Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| React 19 + Vite | Frontend framework & build tool |
-| TypeScript (strict) | Type safety |
-| Tailwind CSS v4 | Utility-first styling |
-| Zustand | Global state management |
-| React Router v7 | Client-side routing |
-| Lucide React | Icons |
+| Technology          | Purpose                         |
+| ------------------- | ------------------------------- |
+| React 19 + Vite     | Frontend framework & build tool |
+| TypeScript (strict) | Type safety                     |
+| Tailwind CSS v4     | Utility-first styling           |
+| Zustand             | Global state management         |
+| React Router v7     | Client-side routing             |
+| Lucide React        | Icons                           |
 
 ---
 
 ## 📁 Project Structure
 
-```
+```bash
 src/
 ├── assets/              # Static assets
 ├── components/
-│   ├── common/          # Reusable components (Skeleton, CategoryIcon)
+│   ├── common/          # Reusable components
 │   ├── layout/          # Layout components
-│   └── product/         # ProductCard component
+│   └── product/         # Product components
 ├── data/
-│   └── products.ts      # Mock data (40 products, 8 categories)
+│   └── products.ts      # Mock data
 ├── layouts/
-│   └── MainLayout.tsx   # Bottom nav (mobile) + Top nav (desktop)
+│   └── MainLayout.tsx
 ├── pages/
-│   ├── auth/            # Splash, Onboarding, Phone, OTP, Location, Login, SignUp
-│   ├── cart/            # Cart page
-│   ├── checkout/        # Checkout, Order Success, Order Failure
-│   ├── home/            # Home, Favorites, Account
-│   └── product/         # Explore, Category, Product Detail, Search, Filters
+│   ├── auth/
+│   ├── cart/
+│   ├── checkout/
+│   ├── home/
+│   └── product/
 ├── routes/
-│   └── AppRoutes.tsx    # All routes + Protected route
+│   └── AppRoutes.tsx
+├── services/            # API service layer (scalable architecture)
 ├── store/
-│   ├── authStore.ts     # Auth state (Zustand)
-│   ├── cartStore.ts     # Cart state (Zustand)
-│   ├── favoritesStore.ts# Favorites state (Zustand)
-│   └── productsStore.ts # Products state (Zustand)
+│   ├── authStore.ts
+│   ├── cartStore.ts
+│   ├── favoritesStore.ts
+│   └── productsStore.ts
 ├── types/
-│   └── index.ts         # Interfaces & Enums
+│   └── index.ts
+├── utils/
+│   └── validation/      # Reusable validation utilities
 ├── App.tsx
 └── main.tsx
 ```
@@ -74,63 +77,114 @@ src/
 
 ## 🗂 State Management (Zustand)
 
-| Store | Responsibility |
-|---|---|
-| `authStore` | User auth, login, signup, logout |
-| `cartStore` | Add/remove/update cart items, totals |
-| `favoritesStore` | Toggle & list favorite products |
-| `productsStore` | Fetch products, search query, error/loading state |
+| Store            | Responsibility                   |
+| ---------------- | -------------------------------- |
+| `authStore`      | User auth, login, signup, logout |
+| `cartStore`      | Add/remove/update cart items     |
+| `favoritesStore` | Manage favorite products         |
+| `productsStore`  | Products, loading, error, search |
 
 ---
 
 ## 📱 Responsive Design
 
 ### Mobile (Primary)
-- Matches Figma design closely
-- Bottom navigation bar (Shop, Explore, Cart, Favourite, Account)
-- Card-based product layout
-- Mobile-first spacing and hierarchy
+
+* Matches Figma design closely
+* Bottom navigation bar
+* Card-based product layout
+* Mobile-first spacing and hierarchy
 
 ### Desktop
-- Split layout on auth pages (branding left, form right)
-- `max-w-7xl` container
-- Top navigation bar
-- Product grid — minimum 4 columns
-- Category / filter sidebar on Explore & Category pages
-- Sticky cart summary on Checkout page
+
+* Split layout on auth pages
+* `max-w-7xl` responsive container
+* Top navigation bar
+* Product grid layout
+* Sidebar filters
+* Sticky checkout summary
 
 ---
 
 ## 🔷 TypeScript
 
 ```ts
-// Interfaces
 interface Product { ... }
 interface CartItem { ... }
 interface User { ... }
 interface Order { ... }
 
-// Enums
-enum ProductCategory { Fruits, Vegetables, Dairy, Bakery, Beverages, Snacks, Meat, Frozen }
-enum OrderStatus { Pending, Confirmed, Processing, OutForDelivery, Delivered, Failed, Cancelled }
+enum ProductCategory {
+  Fruits,
+  Vegetables,
+  Dairy,
+  Bakery,
+  Beverages,
+  Snacks,
+  Meat,
+  Frozen
+}
+
+enum OrderStatus {
+  Pending,
+  Confirmed,
+  Processing,
+  OutForDelivery,
+  Delivered,
+  Failed,
+  Cancelled
+}
 ```
 
 ---
 
 ## ✨ UX & Quality Features
 
-- ✅ **Skeleton loaders** — animated placeholders while products load
-- ✅ **Empty states** — cart, favorites, search, category
-- ✅ **Error states** — fetch failure with retry button
-- ✅ **Debounced search** — 300ms debounce on search input
-- ✅ **Keyboard accessibility** — `aria-label`, `aria-expanded`, `aria-hidden`
-- ✅ **Smooth transitions** — `transition-colors`, `transition-opacity` throughout
+* ✅ Skeleton loaders
+* ✅ Empty states
+* ✅ Error states with retry actions
+* ✅ Debounced search (300ms)
+* ✅ Keyboard accessibility
+* ✅ Smooth UI transitions
+* ✅ Responsive mobile-first UI
+* ✅ Desktop optimized layouts
+* ✅ Reusable component architecture
+* ✅ Type-safe application structure
+
+---
+
+## ✅ Form Validation
+
+* Added validation for:
+
+  * Sign In form
+  * Sign Up form
+
+* Validation currently works on:
+
+  * `onSubmit`
+
+* The architecture is reusable and scalable, allowing validations to be added using:
+
+  * `onBlur`
+  * `onChange`
+  * custom validation handlers
+
+### Supported Validation Types
+
+* Required field validation
+* Email validation
+* Password strength validation
+* Confirm password validation
+* Min / max length validation
+* URL validation
+* Date validation
 
 ---
 
 ## 🔐 Auth Flow
 
-```
+```bash
 / (Splash)
   → /onboarding
     → /phone
@@ -140,7 +194,9 @@ enum OrderStatus { Pending, Confirmed, Processing, OutForDelivery, Delivered, Fa
             → /home (Protected)
 ```
 
-> All routes under `/home` are protected. Unauthenticated users are redirected to `/login`.
+All routes under `/home` are protected.
+
+Unauthenticated users are redirected to `/login`.
 
 ---
 
@@ -164,29 +220,114 @@ npm run preview
 
 ## 📊 Mock Data
 
-- **40 products** across 8 categories
-- **8 categories**: Fruits, Vegetables, Meat, Bakery, Dairy, Beverages, Snacks, Frozen
-- Images from [Unsplash](https://unsplash.com)
-- API calls simulated with `setTimeout`
+* 40+ products
+* 8 categories
+* Images from Unsplash
+* API simulation using `setTimeout`
+
+Categories:
+
+* Fruits
+* Vegetables
+* Meat
+* Bakery
+* Dairy
+* Beverages
+* Snacks
+* Frozen
+
+---
+
+## 🌐 API Integration Ready
+
+Although API integration was not part of the assignment requirements, the application architecture is designed to support scalable backend integration.
+
+A dedicated service layer can be implemented for:
+
+* Authentication
+* Products
+* Cart
+* Orders
+* Favorites
+
+API calls can be handled using:
+
+* `fetch`
+* `axios`
+* `React Query`
+* `RTK Query`
+
+The implementation choice depends on project requirements and scalability needs.
+
+For applications requiring:
+
+* caching
+* background refetching
+* request deduplication
+* optimistic updates
+* advanced server-state management
+
+`React Query` or `RTK Query` would be the preferred solution.
+
+---
+
+## 🔒 Security Improvements
+
+Authentication can be further enhanced with production-grade security features such as:
+
+* Access Token & Refresh Token authentication
+* Automatic token refresh
+* Retry mechanism on token expiration
+* Secure route protection
+* Persistent authentication
+* Role-based access control (RBAC)
+* API interceptors
+* Session expiration handling
+* Secure token storage
+
+---
+
+## ⚡ Possible Future Enhancements
+
+* Real backend integration
+* Payment gateway integration
+* Product reviews & ratings
+* Wishlist synchronization
+* Pagination / infinite scrolling
+* Dark mode support
+* Internationalization (i18n)
+* Unit & integration testing
+* Progressive Web App (PWA)
+* Offline cart persistence
+* Lazy loading & code splitting
+* CI/CD pipeline
+* Docker support
+* Push notifications
+* Analytics integration
+* Admin dashboard
+* Real-time order tracking
 
 ---
 
 ## 📋 Requirements Checklist
 
-- [x] React + Vite + TypeScript (strict)
-- [x] Tailwind CSS — utility-first, no inline styles
-- [x] Zustand — separate stores, no Redux/Context API
-- [x] React Router — all screens implemented
-- [x] Mobile-first responsive design
-- [x] Desktop layout with sidebar & grid
-- [x] All Figma screens implemented
-- [x] Mock JSON data with simulated API
-- [x] TypeScript interfaces & enums
-- [x] No TypeScript errors
-- [x] Skeleton loaders, empty states, error states
-- [x] Debounced search
-- [x] Keyboard accessibility
-- [x] Smooth UI transitions
+* [x] React + Vite + TypeScript
+* [x] Tailwind CSS
+* [x] Zustand state management
+* [x] React Router implementation
+* [x] Mobile-first responsive design
+* [x] Desktop layouts implemented
+* [x] All Figma screens completed
+* [x] Mock API simulation
+* [x] TypeScript interfaces & enums
+* [x] Form validation
+* [x] Skeleton loaders
+* [x] Error states
+* [x] Empty states
+* [x] Debounced search
+* [x] Accessibility improvements
+* [x] Smooth transitions
+* [x] Reusable architecture
 
 ---
 

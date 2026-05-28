@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, MapPin, ShoppingBag } from "lucide-react";
 import { useCartStore } from "../../store/cartStore";
+import Button from "../../components/common/Button";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -89,46 +90,9 @@ export default function CheckoutPage() {
             <div className="flex justify-between font-bold text-gray-900 border-t border-gray-100 pt-3 mb-4">
               <span>Total</span><span>${totalPrice().toFixed(2)}</span>
             </div>
-            <button
-              onClick={handleOrder}
-              disabled={isLoading || !address}
-              className="w-full bg-green-500 text-white py-4 rounded-2xl font-semibold text-lg hover:bg-green-600 transition-colors disabled:opacity-60"
-            >
+            <Button onClick={handleOrder} disabled={isLoading || !address} fullWidth>
               {isLoading ? "Placing Order..." : "Place Order"}
-            </button>
-          </div>
-        </div>
-
-        {/* Right: Sticky Summary — desktop only */}
-        <div className="hidden md:block w-80 sticky top-24 self-start">
-          <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <h2 className="font-bold text-gray-900 text-lg mb-5">Payment Summary</h2>
-
-            <div className="space-y-3 mb-4">
-              <div className="flex justify-between text-sm text-gray-500">
-                <span>Subtotal</span><span>${totalPrice().toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-sm text-gray-500">
-                <span>Delivery fee</span>
-                <span className="text-green-500 font-medium">Free</span>
-              </div>
-              <div className="flex justify-between text-sm text-gray-500">
-                <span>Discount</span><span>$0.00</span>
-              </div>
-            </div>
-
-            <div className="flex justify-between font-bold text-gray-900 border-t border-gray-100 pt-4 mb-6 text-lg">
-              <span>Total Cost</span>
-              <span>${totalPrice().toFixed(2)}</span>
-            </div>
-
-            <button
-              onClick={handleOrder}
-              disabled={isLoading || !address}
-              className="w-full bg-green-500 text-white py-4 rounded-2xl font-semibold text-lg hover:bg-green-600 transition-colors disabled:opacity-60"
-            >
-              {isLoading ? "Placing Order..." : "Place Order"}
-            </button>
+            </Button>
 
             {!address && (
               <p className="text-xs text-gray-400 text-center mt-3">

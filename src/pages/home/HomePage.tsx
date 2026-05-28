@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapPin, Search, AlertCircle, RefreshCw, Leaf } from "lucide-react";
+import { MapPin, AlertCircle, RefreshCw, Leaf } from "lucide-react";
 import { useProductsStore } from "../../store/productsStore";
 import { useAuthStore } from "../../store/authStore";
 import { categories } from "../../data/products";
-import ProductCard from "../../components/product/ProductCard";
-import ProductSkeleton from "../../components/common/ProductSkeleton";
+import SearchBar from "../../components/common/SearchBar";
+import SectionHeader from "../../components/common/SectionHeader";
+import ProductGrid from "../../components/common/ProductGrid";
 import CategoryIcon from "../../components/common/CategoryIcon";
 
 export default function HomePage() {
@@ -32,15 +33,10 @@ export default function HomePage() {
         <span className="text-green-500 font-bold text-lg">nectar</span>
       </div>
 
-      {/* Search bar */}
-      <button
-        onClick={() => navigate("/home/search")}
-        aria-label="Search products"
-        className="w-full flex items-center gap-2 bg-gray-100 rounded-2xl px-4 py-3 mb-4 hover:bg-gray-200 transition-colors"
-      >
-        <Search size={18} className="text-gray-400" />
-        <span className="text-gray-400 text-sm">Search Store</span>
-      </button>
+      {/* Search bar — readonly, navigates to search page */}
+      <div className="mb-4" onClick={() => navigate("/home/search")}>
+        <SearchBar readOnly placeholder="Search Store" />
+      </div>
 
       {/* Banner */}
       <div className="bg-green-500 rounded-2xl p-4 mb-6 flex items-center justify-between overflow-hidden">
@@ -68,25 +64,20 @@ export default function HomePage() {
       )}
 
       {/* Exclusive Offers */}
-      <Section title="Exclusive Offer" onSeeAll={() => navigate("/home/category/Fruits")}>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {isLoading
-            ? Array(4).fill(0).map((_, i) => <ProductSkeleton key={i} />)
-            : exclusiveOffers.map((p) => <ProductCard key={p.id} product={p} />)}
-        </div>
-      </Section>
+      <div className="mb-6">
+        <SectionHeader title="Exclusive Offer" onSeeAll={() => navigate("/home/category/Fruits")} />
+        <ProductGrid products={exclusiveOffers} isLoading={isLoading} skeletonCount={4} />
+      </div>
 
       {/* Best Selling */}
-      <Section title="Best Selling" onSeeAll={() => navigate("/home/explore")}>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {isLoading
-            ? Array(4).fill(0).map((_, i) => <ProductSkeleton key={i} />)
-            : bestSelling.map((p) => <ProductCard key={p.id} product={p} />)}
-        </div>
-      </Section>
+      <div className="mb-6">
+        <SectionHeader title="Best Selling" onSeeAll={() => navigate("/home/explore")} />
+        <ProductGrid products={bestSelling} isLoading={isLoading} skeletonCount={4} />
+      </div>
 
       {/* Groceries */}
-      <Section title="Groceries" onSeeAll={() => navigate("/home/explore")}>
+      <div className="mb-6">
+        <SectionHeader title="Groceries" onSeeAll={() => navigate("/home/explore")} />
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {groceries.map((cat) => (
             <button
@@ -100,33 +91,7 @@ export default function HomePage() {
             </button>
           ))}
         </div>
-      </Section>
-    </div>
-  );
-}
-
-function Section({
-  title,
-  onSeeAll,
-  children,
-}: {
-  title: string;
-  onSeeAll: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mb-6">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-bold text-gray-900">{title}</h2>
-        <button
-          onClick={onSeeAll}
-          aria-label={`See all ${title}`}
-          className="text-green-500 text-sm font-medium hover:text-green-600 transition-colors"
-        >
-          See all
-        </button>
       </div>
-      {children}
     </div>
   );
 }
