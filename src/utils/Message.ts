@@ -1,0 +1,15 @@
+export const CommonValidationMessages = {
+	FieldRequired: 'Please enter {0}',	
+	PasswordNotValid: 'Password must contain at least eight alphanumeric, one special character, one lower and upper case character',
+	ConfirmPasswordRequired: 'Please re-enter password',
+	ComparePassword: 'Password does not match',	
+	PasswordNotMatch: 'Please enter correct password',
+	EmailAddressNotValid: 'Please enter valid email address',
+	SelectRequired: 'Please select {0}',
+	MaxCharacter: ' {0} should be less than 100 Characters',
+	MaxChar: '{0} should be less than 4000 Characters',
+	MaxAmount: 'Amount should be less than or equal to {0}',
+	MinAmount: 'Amount should be greater than or equal to {0}',
+	PasswordFormat: 'Please enter strong password',
+	MaxLength : 'Please enter less than {0} characters',
+};
